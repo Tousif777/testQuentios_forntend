@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Exam from "./components/Exam";
+import Login from "./components/Login";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Result from "./components/Result";
+import { QuestionContext } from "./state/QuestionContext";
+import { useContext } from "react";
 
 function App() {
+  const { login } = useContext(QuestionContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {login === true ? (
+          <>
+            <Route path="/" element={<Exam />} />
+            <Route path="/result" element={<Result />} />
+          </>
+        ) : (
+          <Route path="/" element={<Login />} />
+        )}
+      </Routes>
+    </Router>
   );
 }
 
