@@ -7,14 +7,21 @@ import { QuestionContext } from "./state/QuestionContext";
 import { useContext } from "react";
 
 function App() {
-  const { login } = useContext(QuestionContext);
+  const { login, result } = useContext(QuestionContext);
   return (
     <Router>
       <Routes>
         {login === true ? (
           <>
-            <Route path="/" element={<Exam />} />
-            <Route path="/result" element={<Result />} />
+            {result === "" ? (
+              <>
+                <Route path="/" element={<Exam />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Result />} />
+              </>
+            )}
           </>
         ) : (
           <Route path="/" element={<Login />} />

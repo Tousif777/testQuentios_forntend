@@ -11,7 +11,7 @@ export const QuestionProvider = (props) => {
   const [score, setScore] = useState(0);
   const [userData, setUserData] = useState(localStorageUserData);
   const [login, setLogin] = useState(localStorageUserData ? true : false);
-
+  const [result, setResult] = useState("");
   useEffect(() => {
     axios
       .get("http://localhost:3001/questions")
@@ -20,6 +20,17 @@ export const QuestionProvider = (props) => {
       })
       .catch((err) => console.log(err));
   }, []);
+  //after login get the result from the server
+  useEffect(() => {
+    if (userData) {
+      axios
+        .get(`http://localhost:3001/results/${userData.email}`)
+        .then((res) => {
+          setResult(res.data.score);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [userData]);
 
   const LogoutUser = () => {
     setUserData(null);
@@ -37,6 +48,8 @@ export const QuestionProvider = (props) => {
         LogoutUser,
         setUserData,
         setLogin,
+        userData,
+        result,
       }}
     >
       {props.children}

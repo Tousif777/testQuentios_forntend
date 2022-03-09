@@ -12,7 +12,7 @@ import { QuestionContext } from "../state/QuestionContext";
 import { useNavigate } from "react-router-dom";
 
 const Exam = () => {
-  const { questions, score, setScore, LogoutUser } =
+  const { questions, score, setScore, LogoutUser, userData } =
     useContext(QuestionContext);
   const [selectedoptions, setSelectedoptions] = useState([]);
   let navigate = useNavigate();
@@ -95,7 +95,19 @@ const Exam = () => {
               }
             });
             setScore(correctAnswers);
-            navigate("/result");
+            axios
+              .post("http://localhost:3001/results", {
+                id: userData._id,
+                score: correctAnswers,
+                name: userData.name,
+                email: userData.email,
+              })
+              .then((res) => {
+                setTimeout(() => {
+                  //refresh the page and navigate to the result page
+                  window.location.reload();
+                }, 2000);
+              });
           }}
           style={{
             width: "10%",
